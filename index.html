@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Academic Homepage</title>
+  <meta name="description" content="Personal academic homepage">
+  <meta name="theme-color" content="#070b1a">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <canvas id="sky" aria-hidden="true"></canvas>
+
+  <header class="nav glass">
+    <a class="brand" id="brand" href="#about"></a>
+    <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#news">News</a>
+      <a href="#education">Education</a>
+      <a href="#experience">Experience</a>
+      <a href="#publications">Publications</a>
+      <a href="#awards">Awards</a>
+      <a href="#service">Service</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section id="about" class="hero glass" aria-label="About"></section>
+
+    <section id="news" class="section">
+      <h2>News</h2>
+      <div class="card glass"><ul class="dated"></ul></div>
+    </section>
+
+    <section id="education" class="section">
+      <h2>Education</h2>
+      <ol class="timeline"></ol>
+    </section>
+
+    <section id="experience" class="section">
+      <h2>Experience</h2>
+      <ol class="timeline"></ol>
+    </section>
+
+    <section id="publications" class="section">
+      <div class="section-head">
+        <h2>Publications</h2>
+        <div class="filters glass" id="pub-filters" role="group" aria-label="Filter publications">
+          <button type="button" data-mode="selected">Selected</button>
+          <button type="button" data-mode="all">All</button>
+        </div>
+      </div>
+      <p class="note" id="pub-note"></p>
+      <div id="pub-list"></div>
+      <noscript><p class="note">Please enable JavaScript to view the publication list.</p></noscript>
+    </section>
+
+    <section id="awards" class="section">
+      <h2>Honors &amp; Awards</h2>
+      <div class="card glass"><ul class="dated"></ul></div>
+    </section>
+
+    <section id="service" class="section">
+      <h2>Academic Service</h2>
+      <div class="card glass"><dl class="service" id="service-list"></dl></div>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <button id="to-top" class="glass" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l-7 7 1.4 1.4L11 8.8V20h2V8.8l4.6 4.6L19 12z"/></svg>
+  </button>
+
+  <script src="data.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

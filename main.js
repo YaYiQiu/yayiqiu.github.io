@@ -6,6 +6,7 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const rand = (a, b) => a + Math.random() * (b - a);
 
   const ICONS = {
     email: { vb: "0 0 24 24", d: "M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" },
@@ -31,15 +32,35 @@
     if (a) a.hidden = true;
   };
 
-  function renderProfile() {
+  /* ---------- Hero ---------- */
+  function renderHero() {
     const name = P.name || "Your Name";
+    const lines = P.nameLines && P.nameLines.length ? P.nameLines : name.split(/\s+/);
     document.title = P.nameZh ? `${name} (${P.nameZh})` : name;
     $("#brand").textContent = name;
 
-    const initials = name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
-    const fallback = `<div class="avatar avatar-fallback" aria-hidden="true">${initials}</div>`;
-    const avatar = P.avatar ? `<img class="avatar" src="${P.avatar}" alt="${name}" width="180" height="180">` : fallback;
+    const h1 = $("#neon-name");
+    h1.setAttribute("aria-label", name);
+    h1.innerHTML = lines
+      .map((line) => `<span class="line" aria-hidden="true">${[...line]
+        .map((c) => (c === " " ? '<span class="sp"> </span>' : `<span class="ch">${c}</span>`))
+        .join("")}</span>`)
+      .join("");
 
+    const role = [P.title, P.affiliation].filter(Boolean).join(" · ");
+    const roleEl = $("#role");
+    if (role) roleEl.innerHTML = role; else roleEl.hidden = true;
+
+    const bioEl = $("#bio");
+    const bio = (P.bio || []).map((p) => `<p>${p}</p>`).join("");
+    if (bio) bioEl.innerHTML = bio; else bioEl.hidden = true;
+
+    const intEl = $("#interests");
+    const interests = P.interests || [];
+    if (interests.length) intEl.innerHTML = interests.map((t) => `<span class="tag">${t}</span>`).join("");
+    else intEl.hidden = true;
+
+    const linksEl = $("#links");
     const links = Object.entries(P.links || {})
       .filter(([, v]) => v)
       .map(([k, v]) => {
@@ -48,58 +69,67 @@
         return `<a class="chip-link" href="${href}"${ext}>${icon(k)}<span>${LINK_LABELS[k] || k}</span></a>`;
       })
       .join("");
-
-    const bio = (P.bio || []).map((p) => `<p>${p}</p>`).join("");
-    const interests = (P.interests || []).length
-      ? `<div class="interests"><span class="label">Research Interests</span>${P.interests.map((t) => `<span class="tag">${t}</span>`).join("")}</div>`
-      : "";
-    const role = [P.title, P.affiliation].filter(Boolean).join(" · ");
-
-    $("#about").innerHTML = `
-      <div class="hero-side">${avatar}</div>
-      <div class="hero-body">
-        <h1>${name}${P.nameZh ? ` <span class="zh">${P.nameZh}</span>` : ""}</h1>
-        ${role ? `<p class="role">${role}</p>` : ""}
-        ${links ? `<div class="links">${links}</div>` : ""}
-        <div class="bio">${bio}</div>
-        ${interests}
-      </div>`;
-
-    const img = $("#about img.avatar");
-    if (img) img.addEventListener("error", () => { img.outerHTML = fallback; }, { once: true });
+    if (links) linksEl.innerHTML = links; else linksEl.hidden = true;
   }
 
-  function renderDatedList(sectionId, items, limit = 6) {
-    if (!items || !items.length) return hideSection(sectionId);
-    const section = document.getElementById(sectionId);
-    const ul = $(".dated", section);
-    ul.innerHTML = items
-      .map((it, i) => `<li class="${i >= limit ? "extra" : ""}"><time>${it.date || ""}</time><div>${it.text}</div></li>`)
-      .join("");
+  /* ---------- Neon sign flicker ---------- */
+  function setupNeon() {
+    const h1 = $("#neon-name");
+    const chars = $$(".ch", h1);
+    if (!chars.length || reduceMotion) return;
 
-    if (items.length > limit) {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "more-btn";
-      let open = false;
-      const sync = () => {
-        ul.classList.toggle("expanded", open);
-        btn.textContent = open ? "Show less" : `Show all (${items.length})`;
-        btn.setAttribute("aria-expanded", String(open));
-      };
-      btn.addEventListener("click", () => { open = !open; sync(); });
-      sync();
-      ul.parentElement.appendChild(btn);
-    }
+    const faulty = chars[Math.floor(rand(0.45, 0.95) * chars.length) % chars.length];
+    faulty.classList.add("faulty");
+
+    const timers = new WeakMap();
+    const flicker = (el, pulses) => {
+      if (timers.get(el)) return;
+      let t = 0;
+      for (let i = 0; i < pulses; i++) {
+        const off = rand(30, 140);
+        const on = rand(35, 190);
+        setTimeout(() => el.classList.add("off"), t);
+        t += off;
+        setTimeout(() => el.classList.remove("off"), t);
+        t += on;
+      }
+      timers.set(el, true);
+      setTimeout(() => timers.delete(el), t);
+    };
+
+    chars.forEach((c) => c.classList.add("off"));
+    h1.classList.add("powering");
+    chars.forEach((c) => setTimeout(() => flicker(c, 1 + Math.floor(rand(0, 3))), rand(150, 1100)));
+    setTimeout(() => {
+      chars.forEach((c) => c.classList.remove("off"));
+      h1.classList.remove("powering");
+    }, 2200);
+
+    const loop = () => {
+      if (!document.hidden) {
+        const r = Math.random();
+        if (r < 0.12) {
+          h1.classList.add("brownout");
+          setTimeout(() => h1.classList.remove("brownout"), rand(70, 190));
+        } else if (r < 0.7) {
+          flicker(faulty, 2 + Math.floor(rand(0, 4)));
+        } else {
+          flicker(chars[Math.floor(Math.random() * chars.length)], 1 + Math.floor(rand(0, 2)));
+        }
+      }
+      setTimeout(loop, rand(1600, 5200));
+    };
+    setTimeout(loop, 2600);
   }
 
+  /* ---------- Timelines ---------- */
   function renderTimeline(sectionId, items) {
     if (!items || !items.length) return hideSection(sectionId);
     $(`#${sectionId} .timeline`).innerHTML = items
       .map((it) => `
         <li class="tl-item reveal${it.current ? " current" : ""}">
           <span class="tl-dot" aria-hidden="true"></span>
-          <div class="tl-card glass">
+          <div class="tl-card panel">
             <div class="tl-head">
               <h3>${it.url ? `<a href="${it.url}" target="_blank" rel="noopener">${it.title}</a>` : it.title}</h3>
               <span class="tl-period">${it.period || ""}</span>
@@ -111,6 +141,7 @@
       .join("");
   }
 
+  /* ---------- Publications ---------- */
   function renderPublications() {
     const pubs = D.publications || [];
     if (!pubs.length) return hideSection("publications");
@@ -141,7 +172,7 @@
         .map(([k, v]) => `<a class="btn-sm" href="${v}" target="_blank" rel="noopener">${PUB_LABELS[k] || k}</a>`)
         .join("");
       return `
-        <article class="pub glass reveal">
+        <article class="pub panel reveal">
           ${side}
           <div class="pub-body">
             <h3>${title}</h3>
@@ -178,6 +209,7 @@
     draw();
   }
 
+  /* ---------- Service & footer ---------- */
   function renderService() {
     const items = D.service || [];
     if (!items.length) return hideSection("service");
@@ -191,6 +223,14 @@
     $("#footer").innerHTML = `© ${new Date().getFullYear()} ${name}${D.updated ? ` · Updated ${D.updated}` : ""}`;
   }
 
+  function renumberSections() {
+    $$("main > .section").filter((s) => !s.hidden).forEach((s, i) => {
+      const idx = $(".sec-idx", s);
+      if (idx) idx.textContent = String(i + 1).padStart(2, "0");
+    });
+  }
+
+  /* ---------- Reveal on scroll ---------- */
   let revealObserver;
   function observeReveal(root = document) {
     const items = $$(".reveal:not(.visible)", root);
@@ -209,8 +249,9 @@
     items.forEach((e) => revealObserver.observe(e));
   }
 
+  /* ---------- Nav ---------- */
   function setupNav() {
-    const nav = $(".nav");
+    const nav = $("#nav");
     const toggle = $(".nav-toggle");
     const close = () => { nav.classList.remove("open"); toggle.setAttribute("aria-expanded", "false"); };
     toggle.addEventListener("click", () => toggle.setAttribute("aria-expanded", String(nav.classList.toggle("open"))));
@@ -229,71 +270,24 @@
     }
 
     const toTop = $("#to-top");
-    const onScroll = () => toTop.classList.toggle("show", window.scrollY > 600);
+    const onScroll = () => {
+      const y = window.scrollY;
+      nav.classList.toggle("scrolled", y > 40);
+      toTop.classList.toggle("show", y > 600);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" }));
   }
 
-  function setupSky() {
-    const canvas = $("#sky");
-    const ctx = canvas.getContext && canvas.getContext("2d");
-    if (!ctx) return;
-    let stars = [];
-    let w = 0;
-    let h = 0;
-
-    const draw = (t) => {
-      ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = "#ffffff";
-      for (const s of stars) {
-        ctx.globalAlpha = reduceMotion ? s.a : 0.25 + 0.75 * Math.abs(Math.sin(s.p + t * s.s));
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    };
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = window.innerWidth;
-      h = window.innerHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.round((w * h) / 5000);
-      stars = Array.from({ length: n }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        r: Math.random() * 1.1 + 0.2,
-        a: Math.random() * 0.8 + 0.2,
-        s: Math.random() * 0.0012 + 0.0002,
-        p: Math.random() * Math.PI * 2
-      }));
-      if (reduceMotion) draw(0);
-    };
-
-    let timer;
-    window.addEventListener("resize", () => { clearTimeout(timer); timer = setTimeout(resize, 150); });
-    resize();
-
-    if (!reduceMotion) {
-      const loop = (t) => { draw(t); requestAnimationFrame(loop); };
-      requestAnimationFrame(loop);
-    }
-  }
-
-  renderProfile();
-  renderDatedList("news", D.news);
+  renderHero();
   renderTimeline("education", D.education);
-  renderTimeline("experience", D.experience);
+  renderTimeline("research", D.research);
   renderPublications();
-  renderDatedList("awards", D.awards);
   renderService();
   renderFooter();
+  renumberSections();
   setupNav();
   observeReveal();
-  setupSky();
+  setupNeon();
 })();

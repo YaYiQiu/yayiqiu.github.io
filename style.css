@@ -191,7 +191,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 80px; }
   text-shadow: var(--glow-title);
 }
 .sec-head .filters { margin-left: auto; }
-.note { margin: -12px 0 18px; color: var(--muted); font-size: 14px; }
+.note { margin: -12px 0 18px; color: var(--muted); font-size: 14px; line-height: 1.8; }
 .note:empty { display: none; }
 
 /* ---------- Hero ---------- */
@@ -260,6 +260,10 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 80px; }
 .bio b, .bio strong { color: var(--neon-core); font-weight: 600; }
 
 .interests { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.collab { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 14px; font-size: 14.5px; }
+.collab .label { font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.collab-item { color: var(--neon-core); }
+.collab a.collab-item:hover { text-shadow: var(--glow-title); }
 .tag {
   display: inline-block;
   padding: 3px 12px;

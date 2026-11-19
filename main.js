@@ -60,6 +60,16 @@
     if (interests.length) intEl.innerHTML = interests.map((t) => `<span class="tag">${t}</span>`).join("");
     else intEl.hidden = true;
 
+    const collabEl = $("#collab");
+    const collabs = P.collaborators || [];
+    if (collabs.length) {
+      collabEl.innerHTML = `<span class="label">Research Collaborators</span>${collabs
+        .map((c) => (c.url
+          ? `<a class="collab-item" href="${c.url}" target="_blank" rel="noopener">${c.name}</a>`
+          : `<span class="collab-item">${c.name}</span>`))
+        .join("")}`;
+    } else collabEl.hidden = true;
+
     const linksEl = $("#links");
     const links = Object.entries(P.links || {})
       .filter(([, v]) => v)
@@ -154,9 +164,14 @@
     if (!hasSelected) filters.hidden = true;
 
     const notes = [];
-    if (pubs.some((p) => /\*/.test(p.authors || ""))) notes.push("* Equal contribution");
-    if (P.links && P.links.scholar) notes.push(`Full list on <a href="${P.links.scholar}" target="_blank" rel="noopener">Google Scholar</a>`);
-    $("#pub-note").innerHTML = notes.join(" · ");
+    if (P.links && P.links.scholar) {
+      notes.push(`For the complete, regularly updated publication list, see <a href="${P.links.scholar}" target="_blank" rel="noopener">Google Scholar ↗</a>.`);
+    }
+    const marks = [];
+    if (pubs.some((p) => /\*/.test(p.authors || ""))) marks.push("* Equal contribution.");
+    if (pubs.some((p) => /†/.test(p.authors || ""))) marks.push("† Corresponding author.");
+    if (marks.length) notes.push(marks.join(" "));
+    $("#pub-note").innerHTML = notes.join("<br>");
 
     const fmtAuthors = (s) => me.reduce((acc, n) => acc.split(n).join(`<span class="me">${n}</span>`), s || "");
 
@@ -177,7 +192,7 @@
           <div class="pub-body">
             <h3>${title}</h3>
             <p class="authors">${fmtAuthors(p.authors)}</p>
-            <p class="venue"><em>${p.venue || ""}</em>${p.year ? `, ${p.year}` : ""}</p>
+            <p class="venue"><em>${p.venue || ""}</em>${p.date || p.year ? `, ${p.date || p.year}` : ""}</p>
             ${tags || links ? `<div class="pub-links">${tags}${links}</div>` : ""}
           </div>
         </article>`;

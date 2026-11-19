@@ -26,7 +26,10 @@ window.SITE_DATA = {
       "TODO: A short introduction — who you are, where you study, and who you work with.",
       "TODO: Your research focuses on <b>topic A</b>, <b>topic B</b> and <b>topic C</b>."
     ],
-    interests: ["TODO Interest 1", "TODO Interest 2", "TODO Interest 3"]
+    interests: ["TODO Interest 1", "TODO Interest 2", "TODO Interest 3"],
+    // 研究合作者，显示在首屏；留空 [] 则不显示。url 可省略
+    // 例如：{ name: "Prof. Someone", url: "https://..." }
+    collaborators: []
   },
 
   // current: true 会让时间线圆点呼吸发光，表示“进行中”
@@ -72,6 +75,9 @@ window.SITE_DATA = {
    * selected: true → 显示在 Selected 标签下；All 标签按年份分组显示全部
    * venueShort    → 左侧徽章文字；也可以用 image: "images/xxx.png" 换成论文配图
    * links 键名可选：paper / arxiv / code / project / slides / video / poster / bibtex
+   * year 用于分组；date（可选，如 "May 2026"）会代替 year 显示在会议名后
+   * 作者名后加 * 表示共同一作，加 † 表示通讯作者，页面会自动显示对应说明
+   * 填了 profile.links.scholar 后，列表上方会显示 Google Scholar 完整列表链接
    */
   publications: [
     {

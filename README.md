@@ -22,15 +22,11 @@ python3 -m http.server 4177
 
 ## 部署到 GitHub Pages
 
-1. 在 GitHub 新建公开仓库，名称必须为 `<你的用户名>.github.io`
-2. 推送本目录内容到仓库：
-   ```bash
-   git init && git add . && git commit -m "init homepage"
-   git branch -M main
-   git remote add origin git@github.com:<你的用户名>/<你的用户名>.github.io.git
-   git push -u origin main
-   ```
-3. 仓库 Settings → Pages → Source 选 `Deploy from a branch`，分支 `main`，目录 `/ (root)`
-4. 1~2 分钟后访问 `https://<你的用户名>.github.io/`
+- 仓库：https://github.com/YaYiQiu/yayiqiu.github.io（`main` 分支根目录发布）
+- 线上地址：https://yayiqiu.github.io/
 
-之后只需修改 `data.js` 并 push，网站即自动更新。
+更新内容：修改 `data.js` 后提交并推送，1~2 分钟后网站自动更新：
+
+```bash
+git add -A && git commit -m "update content" && git push
+```

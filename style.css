@@ -123,6 +123,15 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   white-space: nowrap;
 }
 .brand:hover { text-decoration: none; }
+.brand .zh {
+  margin-left: 10px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-shadow: none;
+}
 .nav nav { display: flex; flex-wrap: wrap; gap: 4px; }
 .nav nav a {
   position: relative;
@@ -258,6 +267,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 80px; }
 .bio p { margin: 0; }
 .bio p + p { margin-top: 10px; }
 .bio b, .bio strong { color: var(--neon-core); font-weight: 600; }
+.bio em { color: var(--neon-core); letter-spacing: 0.04em; }
 
 .interests { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .collab { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 14px; font-size: 14.5px; }

@@ -8,7 +8,7 @@ window.SITE_DATA = {
 
   profile: {
     name: "Yang MaYuBo",
-    nameZh: "",
+    nameZh: "杨马钰波",
     nameLines: ["Yang", "MaYuBo"],      // 首屏大字的分行方式
     highlightName: ["Mayubo Yang", "MaYuBo Yang", "Yang MaYuBo"], // 论文作者列表里需要高亮的写法
     title: "Undergraduate Student",
@@ -21,7 +21,7 @@ window.SITE_DATA = {
       linkedin: "",
       cv: ""
     },
-    bio: [],
+    bio: ["<em>Per aspera ad astra.</em>"],
     interests: ["LLM Post-training", "Long-horizon Agentic RL", "RSI"],
     // 研究合作者，显示在首屏；url 可省略
     collaborators: [
@@ -69,6 +69,30 @@ window.SITE_DATA = {
       venueShort: "AAAI",
       year: 2027,
       selected: true,
+      tags: ["Under Review"]
+    },
+    {
+      title: "Same Trajectories, Different States: Rethinking State Abstraction for Agentic Credit Assignment",
+      authors: "Mayubo Yang*, Shuyun Yang*, Mohui Xu, Siying Qian, Zhe Sun, Yuwen Li, Wei Zhang†",
+      venue: "Annual Meeting of the Association for Computational Linguistics (ACL)",
+      venueShort: "ACL",
+      year: 2027,
+      tags: ["Under Review"]
+    },
+    {
+      title: "Language as Computation: Simulated Feedback and On-Policy Guidance for Interactive Agents",
+      authors: "Mayubo Yang*, Shuyun Yang*, Yuwen Li, Zhe Sun, Siying Qian, Mohui Xu, Wei Zhang†",
+      venue: "International Conference on Learning Representations (ICLR)",
+      venueShort: "ICLR",
+      year: 2027,
+      tags: ["Under Review"]
+    },
+    {
+      title: "Distilling What Matters: State-Boundary Supervision for On-Policy Distillation of Long-Horizon Coding Agents",
+      authors: "Mohui Xu*, Shuyun Yang*, Mayubo Yang*, Siying Qian, Zhe Sun, Yuwen Li, Wei Zhang†",
+      venue: "Annual Meeting of the Association for Computational Linguistics (ACL)",
+      venueShort: "ACL",
+      year: 2027,
       tags: ["Under Review"]
     },
     {

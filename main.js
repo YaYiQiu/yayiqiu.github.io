@@ -37,7 +37,7 @@
     const name = P.name || "Your Name";
     const lines = P.nameLines && P.nameLines.length ? P.nameLines : name.split(/\s+/);
     document.title = P.nameZh ? `${name} (${P.nameZh})` : name;
-    $("#brand").textContent = name;
+    $("#brand").innerHTML = P.nameZh ? `${name}<span class="zh">${P.nameZh}</span>` : name;
 
     const h1 = $("#neon-name");
     h1.setAttribute("aria-label", name);

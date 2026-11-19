@@ -227,7 +227,11 @@
   /* ---------- Service & footer ---------- */
   function renderService() {
     const items = D.service || [];
-    if (!items.length) return hideSection("service");
+    if (!items.length) {
+      if (!D.serviceEmptyText) return hideSection("service");
+      $("#service-list").outerHTML = `<p class="empty">${D.serviceEmptyText}</p>`;
+      return;
+    }
     $("#service-list").innerHTML = items
       .map((r) => `<div class="svc-row"><dt>${r.role}</dt><dd>${r.items}</dd></div>`)
       .join("");

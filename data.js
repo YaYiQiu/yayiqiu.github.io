@@ -12,7 +12,7 @@ window.SITE_DATA = {
     nameLines: ["Yang", "MaYuBo"],      // 首屏大字的分行方式
     highlightName: ["Mayubo Yang", "MaYuBo Yang", "Yang MaYuBo"], // 论文作者列表里需要高亮的写法
     title: "Undergraduate Student",
-    affiliation: "西南石油大学",
+    affiliation: "Southwest Petroleum University",
     links: {
       email: "yangmayubo@gmail.com",
       scholar: "https://scholar.google.com/citations?user=T-rgBTkAAAAJ&hl=zh-CN",
@@ -21,10 +21,8 @@ window.SITE_DATA = {
       linkedin: "",
       cv: ""
     },
-    bio: [
-      "对AI前沿技术感兴趣的新人"
-    ],
-    interests: ["Agentic Post-training", "Long-horizon Agent", "RSI"],
+    bio: [],
+    interests: ["LLM Post-training", "Long-horizon Agentic RL", "RSI"],
     // 研究合作者，显示在首屏；url 可省略
     collaborators: [
       { name: "Wei Zhang", url: "https://zwpride.github.io/" },
@@ -36,7 +34,7 @@ window.SITE_DATA = {
   education: [
     {
       period: "2024.09 – 2028.06",
-      title: "Southwest Petroleum University (西南石油大学)",
+      title: "Southwest Petroleum University",
       subtitle: "B.E. in Computer Science and Technology",
       current: true
     }
@@ -46,7 +44,7 @@ window.SITE_DATA = {
     {
       period: "2026.07 – Present",
       title: "Tencent",
-      subtitle: "Intern · Harness RSI",
+      subtitle: "Research Intern · Harness RSI",
       current: true
     },
     {
@@ -67,16 +65,25 @@ window.SITE_DATA = {
     {
       title: "One State, Many Paths: From Linear Trajectories to Hierarchical State Spaces for Terminal Agents",
       authors: "Wei Zhang*, Mayubo Yang*, Yuwen Li*, Jian Yang†, Mingjie Tang, Aishan Liu, Xianglong Liu, Bryan Dai",
+      venue: "AAAI Conference on Artificial Intelligence (AAAI)",
+      venueShort: "AAAI",
+      year: 2027,
+      selected: true,
+      tags: ["Under Review"]
+    },
+    {
+      title: "Close the Loop: Synthesizing Infinite Tool-Use Data via Multi-Agent Role-Playing",
+      authors: "Yuwen Li, Wei Zhang, Zelong Huang, Mayubo Yang, Jiajun Wu, Shawn Guo, Huahao Hu, Lingyi Sun, Jian Yang, Mingjie Tang, Bryan Dai",
       venue: "arXiv preprint",
       venueShort: "arXiv",
       year: 2025,
       date: "2025.01",
       selected: true,
-      tags: ["Under review at AAAI 2027"],
       links: { arxiv: "https://arxiv.org/abs/2512.23611" }
     }
   ],
 
-  // 暂无内容，板块和导航项会自动隐藏；以后有审稿等经历时按 { role, items } 填写
-  service: []
+  // 有审稿等经历时按 { role, items } 填写；为空时显示 serviceEmptyText
+  service: [],
+  serviceEmptyText: "暂无"
 };

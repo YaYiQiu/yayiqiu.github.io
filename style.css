@@ -213,12 +213,26 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 80px; }
   justify-content: center;
   padding: 110px 0 90px;
 }
-.eyebrow {
-  margin: 0 0 18px;
-  font-size: 13px;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--muted);
+.motto {
+  position: relative;
+  margin: 0 0 26px;
+  padding-left: 18px;
+  font-size: clamp(16px, 1.7vw, 21px);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: #b9cde3;
+}
+.motto::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  bottom: 0.2em;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--neon);
+  box-shadow: 0 0 8px var(--neon);
 }
 
 .neon-name {

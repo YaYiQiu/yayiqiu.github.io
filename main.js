@@ -39,6 +39,9 @@
     document.title = P.nameZh ? `${name} (${P.nameZh})` : name;
     $("#brand").innerHTML = P.nameZh ? `${name}<span class="zh">${P.nameZh}</span>` : name;
 
+    const mottoEl = $("#motto");
+    if (P.motto) mottoEl.textContent = P.motto; else mottoEl.hidden = true;
+
     const h1 = $("#neon-name");
     h1.setAttribute("aria-label", name);
     h1.innerHTML = lines
